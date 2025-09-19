@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{title}} - nhttp-server</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="breadcrumb">
+                <h1>
+                    <span class="icon">📁</span>
+                    {{{breadcrumb}}}
+                </h1>
+            </div>
+            <div class="toolbar">
+                <button class="btn" id="viewToggle" title="切换视图">
+                    <span class="icon">⊞</span>
+                </button>
+                <button class="btn" id="sortToggle" title="排序">
+                    <span class="icon">↕</span>
+                </button>
+                <button class="btn" onclick="location.reload()" title="刷新">
+                    <span class="icon">↻</span>
+                </button>
+            </div>
+        </header>
+
+        <main class="main">
+            {{#parentPath}}
+            <div class="file-item parent-dir" onclick="location.href='{{parentPath}}'">
+                <div class="file-icon">
+                    <span class="icon">📁</span>
+                </div>
+                <div class="file-info">
+                    <div class="file-name">..</div>
+                    <div class="file-meta">返回上级目录</div>
+                </div>
+            </div>
+            {{/parentPath}}
+            
+            <div class="file-list" id="fileList">
+                {{#fileItems}}
+                <div class="file-item {{#isDirectory}}directory{{/isDirectory}}{{^isDirectory}}file{{/isDirectory}}" {{#mediaType}}onclick="showMediaPreview('{{href}}', '{{mediaType}}', '{{name}}')"{{/mediaType}}{{^mediaType}}onclick="location.href='{{href}}'"{{/mediaType}}>
+                    <div class="file-icon">
+                        <span class="icon">{{iconEmoji}}</span>
+                    </div>
+                    <div class="file-info">
+                        <div class="file-name" title="{{name}}">{{name}}</div>
+                        <div class="file-meta">
+                            <span class="file-size">{{formattedSize}}</span>
+                            <span class="file-date">{{formattedDate}}</span>
+                        </div>
+                    </div>
+                </div>
+                {{/fileItems}}
+            </div>
+        </main>
+    </div>
+
+    <!-- 媒体预览模态框 -->
+    <div class="modal" id="mediaModal">
+        <div class="modal-content">
+            <span class="modal-close" id="modalClose">&times;</span>
+            <div class="modal-body" id="modalBody"></div>
+        </div>
+    </div>
+
+    <script src="/static/app.js"></script>
+</body>
+</html>
