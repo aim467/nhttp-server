@@ -1,58 +1,68 @@
-/* Windows Explorer 风格样式 */
 :root {
-    --explorer-bg: #ffffff;
-    --explorer-header-bg: #f8f9fa;
-    --explorer-border: #e1e5e9;
-    --explorer-hover: #e8f4fd;
-    --explorer-selected: #cce8ff;
-    --explorer-text: #323130;
-    --explorer-text-secondary: #605e5c;
-    --explorer-accent: #0078d4;
+    --explorer-bg: #f5f5f7;
+    --explorer-header-bg: #f9fafb;
+    --explorer-border: #e5e5ea;
+    --explorer-hover: #ffffff;
+    --explorer-selected: #e5f0ff;
+    --explorer-text: #111827;
+    --explorer-text-secondary: #6b7280;
+    --explorer-accent: #0a84ff;
+    --radius-pill: 999px;
+    --radius-card: 8px;
+    --radius-control: 6px;
+    --radius-input: 6px;
+    --radius-popup: 6px;
+    --radius-small: 3px;
+    --space-xs: 2px;
+    --space-sm: 4px;
+    --space-md: 8px;
+    --space-lg: 12px;
+    --space-xl: 18px;
 }
 
-/* 深色主题 */
 [data-theme="dark"] {
-    --explorer-bg: #202020;
-    --explorer-header-bg: #2d2d30;
-    --explorer-border: #3e3e42;
-    --explorer-hover: #37373d;
-    --explorer-selected: #094771;
-    --explorer-text: #ffffff;
-    --explorer-text-secondary: #cccccc;
-    --explorer-accent: #0078d4;
+    --explorer-bg: #000000;
+    --explorer-header-bg: #050509;
+    --explorer-border: #2c2c2e;
+    --explorer-hover: #1c1c1e;
+    --explorer-selected: #0a84ff;
+    --explorer-text: #f2f2f7;
+    --explorer-text-secondary: #8e8e93;
+    --explorer-accent: #0a84ff;
 }
 
-/* 全局样式 */
 body.windows-explorer {
     font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, "Helvetica Neue", sans-serif;
     font-size: 14px;
-    background-color: var(--explorer-bg);
+    background: var(--explorer-bg);
     color: var(--explorer-text);
     margin: 0;
     padding: 0;
     overflow-x: hidden;
 }
 
-/* 头部区域 */
 .explorer-header {
-    background-color: var(--explorer-header-bg);
-    border-bottom: 1px solid var(--explorer-border);
-    padding: 8px 0;
+    background-color: rgba(249, 250, 251, 0.92);
+    border-bottom: 1px solid rgba(229, 229, 234, 0.9);
+    padding: var(--space-sm) 0;
     position: sticky;
     top: 0;
     z-index: 1000;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.04);
 }
 
 /* 地址栏 */
 .address-bar {
-    padding: 0 16px;
+    padding: 0 var(--space-lg);
 }
 
 .breadcrumb-nav .breadcrumb {
-    background-color: var(--explorer-bg);
-    border: 1px solid var(--explorer-border);
-    border-radius: 4px;
-    padding: 6px 12px;
+    background-color: #ffffff;
+    border: 1px solid rgba(229, 229, 234, 0.9);
+    border-radius: var(--radius-pill);
+    padding: var(--space-sm) var(--space-lg);
     margin: 0;
     font-size: 13px;
 }
@@ -72,55 +82,66 @@ body.windows-explorer {
 }
 
 .search-box .form-control {
-    border: 1px solid var(--explorer-border);
+    border: 1px solid rgba(209, 213, 219, 0.9);
     font-size: 13px;
-    background-color: var(--explorer-bg);
+    background-color: rgba(255, 255, 255, 0.9);
     color: var(--explorer-text);
+    border-radius: var(--radius-pill);
+}
+
+.search-box .input-group-text {
+    border: 1px solid rgba(209, 213, 219, 0.9);
+    border-right: none;
+    border-radius: var(--radius-pill) 0 0 var(--radius-pill);
+    background-color: transparent;
+    color: var(--explorer-text-secondary);
 }
 
 .search-box .form-control:focus {
     border-color: var(--explorer-accent);
-    box-shadow: 0 0 0 2px rgba(0, 120, 212, 0.2);
+    box-shadow: 0 0 0 2px rgba(10, 132, 255, 0.25);
 }
 
-/* 工具栏 */
 .toolbar {
-    padding: 0 16px;
-    border-top: 1px solid var(--explorer-border);
-    background-color: var(--explorer-header-bg);
-    min-height: 40px;
+    padding: var(--space-xs) var(--space-lg) var(--space-sm);
+    border-top: 1px solid rgba(229, 229, 234, 0.9);
+    background-color: transparent;
+    min-height: 44px;
 }
 
 .toolbar .btn {
-    border: 1px solid transparent;
-    background: transparent;
+    border: 1px solid rgba(209, 213, 219, 0.9);
+    background: #ffffff;
     color: var(--explorer-text);
     font-size: 13px;
-    padding: 4px 8px;
+    padding: 3px 9px;
+    border-radius: var(--radius-control);
+    box-shadow: none;
 }
 
 .toolbar .btn:hover {
     background-color: var(--explorer-hover);
-    border-color: var(--explorer-border);
+    border-color: rgba(10, 132, 255, 0.9);
 }
 
 .toolbar .btn.active {
     background-color: var(--explorer-selected);
     border-color: var(--explorer-accent);
+    color: #ffffff;
 }
 
-/* 文件容器 */
 .file-container {
-    background-color: var(--explorer-bg);
-    min-height: calc(100vh - 120px);
-    padding: 8px 0;
+    background-color: #ffffff;
+    min-height: calc(100vh - 110px);
+    padding: var(--space-md) 0 var(--space-lg);
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
-/* 列表视图头部 */
 .list-header {
-    padding: 8px 16px;
-    background-color: var(--explorer-header-bg);
-    border-bottom: 1px solid var(--explorer-border);
+    padding: var(--space-sm) var(--space-lg);
+    background-color: #ffffff;
+    border-bottom: 1px solid rgba(229, 231, 235, 0.9);
     margin-bottom: 0;
 }
 
@@ -132,35 +153,35 @@ body.windows-explorer {
     display: block !important;
 }
 
-/* 文件列表 */
 .file-list {
-    padding: 0 16px;
+    padding: 0 var(--space-lg);
 }
 
-/* 网格视图 */
 .file-list:not(.list-view) {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-    gap: 8px;
-    padding: 16px;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: var(--space-md);
+    padding: var(--space-md) var(--space-md) var(--space-xs);
 }
 
-/* 列表视图 */
 .file-list.list-view {
+    margin: 10px 0;
     display: block;
 }
 
-/* 文件项基础样式 */
 .file-item {
     cursor: pointer;
-    border-radius: 4px;
-    transition: all 0.15s ease;
+    border-radius: var(--radius-card);
+    transition: background-color 0.15s ease, border-color 0.15s ease;
     position: relative;
     user-select: none;
+    background-color: #ffffff;
+    border: 1px solid rgba(229, 229, 234, 0.9);
 }
 
 .file-item:hover {
     background-color: var(--explorer-hover);
+    border-color: rgba(10, 132, 255, 0.45);
 }
 
 .file-item:hover .file-actions-grid,
@@ -173,7 +194,6 @@ body.windows-explorer {
     background-color: var(--explorer-selected);
 }
 
-/* 文件操作按钮 */
 .file-actions-grid,
 .file-actions-list {
     opacity: 0;
@@ -195,19 +215,69 @@ body.windows-explorer {
 
 .file-actions-grid .btn,
 .file-actions-list .btn {
-    padding: 2px 6px;
+    padding: 2px 7px;
     font-size: 12px;
-    border-radius: 3px;
+    border-radius: var(--radius-control);
+    font-weight: 500;
 }
 
-/* 网格视图布局 */
 .grid-layout {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 8px;
+    padding: var(--space-sm) var(--space-sm) var(--space-xs);
     text-align: center;
     min-height: 80px;
+}
+
+[data-theme="dark"] body.windows-explorer {
+    background: #000000;
+}
+
+[data-theme="dark"] .explorer-header {
+    background-color: rgba(5, 5, 9, 0.96);
+    border-bottom: 1px solid rgba(44, 44, 46, 0.9);
+    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.6);
+}
+
+[data-theme="dark"] .breadcrumb-nav .breadcrumb {
+    background-color: #1c1c1e;
+    border: 1px solid rgba(44, 44, 46, 0.9);
+}
+
+[data-theme="dark"] .search-box .form-control {
+    background-color: #1c1c1e;
+    border-color: rgba(44, 44, 46, 0.9);
+    color: var(--explorer-text);
+}
+
+[data-theme="dark"] .toolbar {
+    border-top-color: rgba(44, 44, 46, 0.9);
+}
+
+[data-theme="dark"] .toolbar .btn {
+    background: #1c1c1e;
+    border-color: rgba(44, 44, 46, 0.9);
+    color: var(--explorer-text);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.55);
+}
+
+[data-theme="dark"] .file-container {
+    background-color: #000000;
+}
+
+[data-theme="dark"] .list-header {
+    background-color: #050509;
+    border-bottom-color: rgba(44, 44, 46, 0.9);
+}
+
+[data-theme="dark"] .file-item {
+    background-color: #1c1c1e;
+    border-color: rgba(44, 44, 46, 0.95);
+}
+
+[data-theme="dark"] .file-item:hover {
+    border-color: rgba(10, 132, 255, 0.75);
 }
 
 .file-icon-large {
