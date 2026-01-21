@@ -296,11 +296,6 @@ body.windows-explorer {
     color: #000000;
 }
 
-/* 隐藏的文件项 */
-.file-item.hidden {
-    display: none !important;
-}
-
 /* 模态框样式 */
 .modal-content {
     border: none;
@@ -468,38 +463,10 @@ kbd {
     outline-offset: 1px;
 }
 
-/* 加载动画 */
-.loading {
-    display: inline-block;
-    width: 16px;
-    height: 16px;
-    border: 2px solid var(--explorer-border);
-    border-radius: 50%;
-    border-top-color: var(--explorer-accent);
-    animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-    to { transform: rotate(360deg); }
-}
-
 /* 拖拽效果 */
 .drag-over {
     background: rgba(0, 120, 212, 0.1);
     border: 2px dashed var(--explorer-accent);
-}
-
-/* 空状态 */
-.empty-state {
-    text-align: center;
-    padding: 60px 20px;
-    color: var(--explorer-text-secondary);
-}
-
-.empty-state i {
-    font-size: 48px;
-    margin-bottom: 16px;
-    opacity: 0.5;
 }
 
 /* 右键菜单样式 */
@@ -537,15 +504,6 @@ kbd {
     background-color: var(--explorer-selected);
 }
 
-.context-menu-item.disabled {
-    color: var(--explorer-text-secondary);
-    cursor: not-allowed;
-}
-
-.context-menu-item.disabled:hover {
-    background-color: transparent;
-}
-
 .context-menu-divider {
     height: 1px;
     background-color: var(--explorer-border);
@@ -557,7 +515,9 @@ kbd {
     .explorer-header,
     .toast-container,
     .modal,
-    .context-menu {
+    .context-menu,
+    .file-preview-popup,
+    .preview-overlay {
         display: none !important;
     }
     
@@ -581,4 +541,346 @@ kbd {
     .file-actions-list {
         display: none !important;
     }
+}
+
+/* 文件预览浮窗样式 */
+.file-preview-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80vw;
+    max-width: 900px;
+    height: 70vh;
+    max-height: 700px;
+    background: var(--explorer-bg);
+    border: 1px solid var(--explorer-border);
+    border-radius: 8px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+    z-index: 10000;
+    display: flex;
+    flex-direction: column;
+    font-size: 13px;
+}
+
+[data-theme="dark"] .file-preview-popup {
+    background: #2d2d30;
+    border-color: #3e3e42;
+}
+
+.file-preview-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--explorer-border);
+    background: var(--explorer-header-bg);
+    border-radius: 8px 8px 0 0;
+}
+
+.file-preview-title {
+    display: flex;
+    align-items: center;
+    font-weight: 600;
+    color: var(--explorer-text);
+}
+
+.file-preview-actions {
+    display: flex;
+}
+
+.file-preview-info {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0;
+    padding: 8px 16px;
+    border-bottom: 1px solid var(--explorer-border);
+    background: var(--explorer-header-bg);
+    font-size: 12px;
+    color: var(--explorer-text-secondary);
+}
+
+.file-preview-info span {
+    display: flex;
+    align-items: center;
+}
+
+.file-preview-toolbar {
+    display: flex;
+    align-items: center;
+    padding: 8px 16px;
+    border-bottom: 1px solid var(--explorer-border);
+    background: var(--explorer-bg);
+}
+
+.file-preview-toolbar select {
+    width: auto;
+    min-width: 120px;
+}
+
+.file-preview-content {
+    flex: 1;
+    overflow: auto;
+    background: #1e1e1e;
+    color: #d4d4d4;
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+    font-size: 13px;
+    line-height: 1.5;
+    padding: 16px;
+    margin: 0;
+    white-space: pre-wrap;
+    word-break: break-all;
+}
+
+.file-preview-content .line-number {
+    color: #858585;
+    display: inline-block;
+    width: 40px;
+    text-align: right;
+    margin-right: 16px;
+    user-select: none;
+}
+
+.file-preview-content .line-content {
+    display: inline;
+}
+
+.file-preview-status {
+    padding: 6px 16px;
+    font-size: 12px;
+    color: var(--explorer-text-secondary);
+    background: var(--explorer-header-bg);
+    border-top: 1px solid var(--explorer-border);
+    border-radius: 0 0 8px 8px;
+}
+
+/* 浮窗遮罩层 */
+.preview-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+}
+
+/* 错误状态样式 */
+.file-preview-content .error-message {
+    color: #f14c4c;
+    padding: 20px;
+    text-align: center;
+}
+
+.file-preview-content .error-message .error-icon {
+    font-size: 48px;
+    margin-bottom: 16px;
+    display: block;
+}
+
+/* 加载动画 */
+.loading-spinner {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: #fff;
+    animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* 大文件警告 */
+.file-preview-status .warning {
+    color: #ffa500;
+}
+
+.file-preview-status .info {
+    color: #0078d4;
+}
+
+/* 文件预览浮窗样式 */
+.file-preview-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80vw;
+    max-width: 900px;
+    height: 70vh;
+    max-height: 700px;
+    background: var(--explorer-bg);
+    border: 1px solid var(--explorer-border);
+    border-radius: 8px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+    z-index: 10000;
+    display: flex;
+    flex-direction: column;
+    font-size: 13px;
+}
+
+[data-theme="dark"] .file-preview-popup {
+    background: #2d2d30;
+    border-color: #3e3e42;
+}
+
+.file-preview-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--explorer-border);
+    background: var(--explorer-header-bg);
+    border-radius: 8px 8px 0 0;
+}
+
+.file-preview-title {
+    display: flex;
+    align-items: center;
+    font-weight: 600;
+    color: var(--explorer-text);
+}
+
+.file-preview-actions {
+    display: flex;
+}
+
+.file-preview-info {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0;
+    padding: 8px 16px;
+    border-bottom: 1px solid var(--explorer-border);
+    background: var(--explorer-header-bg);
+    font-size: 12px;
+    color: var(--explorer-text-secondary);
+}
+
+.file-preview-info span {
+    display: flex;
+    align-items: center;
+}
+
+.file-preview-toolbar {
+    display: flex;
+    align-items: center;
+    padding: 8px 16px;
+    border-bottom: 1px solid var(--explorer-border);
+    background: var(--explorer-bg);
+}
+
+.file-preview-toolbar select {
+    width: auto;
+    min-width: 120px;
+}
+
+.file-preview-content {
+    flex: 1;
+    overflow: auto;
+    background: #1e1e1e;
+    color: #d4d4d4;
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+    font-size: 13px;
+    line-height: 1.5;
+    padding: 16px;
+    margin: 0;
+    white-space: pre-wrap;
+    word-break: break-all;
+}
+
+.file-preview-content .line-number {
+    color: #858585;
+    display: inline-block;
+    width: 40px;
+    text-align: right;
+    margin-right: 16px;
+    user-select: none;
+}
+
+.file-preview-content .line-content {
+    display: inline;
+}
+
+.file-preview-content .keyword {
+    color: #569cd6;
+}
+
+.file-preview-content .string {
+    color: #ce9178;
+}
+
+.file-preview-content .comment {
+    color: #6a9955;
+}
+
+.file-preview-content .number {
+    color: #b5cea8;
+}
+
+.file-preview-content .function {
+    color: #dcdcaa;
+}
+
+.file-preview-status {
+    padding: 6px 16px;
+    font-size: 12px;
+    color: var(--explorer-text-secondary);
+    background: var(--explorer-header-bg);
+    border-top: 1px solid var(--explorer-border);
+    border-radius: 0 0 8px 8px;
+}
+
+/* 浮窗遮罩层 */
+.preview-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+}
+
+/* 错误状态样式 */
+.file-preview-content .error-message {
+    color: #f14c4c;
+    padding: 20px;
+    text-align: center;
+}
+
+.file-preview-content .error-message .error-icon {
+    font-size: 48px;
+    margin-bottom: 16px;
+    display: block;
+}
+
+/* 加载动画 */
+.loading-spinner {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: #fff;
+    animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* 大文件警告 */
+.file-preview-status .warning {
+    color: #ffa500;
+}
+
+.file-preview-status .info {
+    color: #0078d4;
 }
