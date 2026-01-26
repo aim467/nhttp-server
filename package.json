@@ -1,5 +1,5 @@
 {
-  "name": "nhttp-server",
+  "name": "@root2z/nhttp-server",
   "version": "1.0.0",
   "description": "轻量级 Node.js 静态文件服务器，提供现代化的目录渲染、文件图标、图片/视频预览等功能",
   "main": "lib/server.js",
@@ -19,7 +19,7 @@
     "development",
     "cli"
   ],
-  "author": "CodeBuddy",
+  "author": "aim467",
   "license": "MIT",
   "dependencies": {
     "archiver": "^5.3.2",
@@ -33,10 +33,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/your-username/nhttp-server.git"
+    "url": "https://github.com/aim467/nhttp-server.git"
   },
   "bugs": {
-    "url": "https://github.com/your-username/nhttp-server/issues"
+    "url": "https://github.com/aim467/nhttp-server/issues"
   },
-  "homepage": "https://github.com/your-username/nhttp-server#readme"
+  "homepage": "https://github.com/aim467/nhttp-server#readme"
 }
