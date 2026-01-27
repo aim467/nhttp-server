@@ -13,6 +13,7 @@ program
   .argument('[directory]', '要服务的目录', process.cwd())
   .option('-p, --port <number>', '指定端口', '8000')
   .option('-d, --directory <path>', '指定根目录')
+  .option('-a, --auth <code...>', '指定访问授权码（开启受保护模式）')
   .option('-o, --open', '启动后自动打开浏览器', false)
   .option('--no-browser', '明确不打开浏览器')
   .option('--compress', '启用 gzip/brotli 压缩', false)
@@ -36,6 +37,7 @@ program
     createServer({
       port,
       rootDir: resolvedDir,
+      auth: options.auth,
       open: options.open && options.browser !== false,
       compress: options.compress,
       cors: options.cors
