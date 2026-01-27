@@ -34,10 +34,17 @@ program
     console.log(chalk.gray(`   目录: ${resolvedDir}`));
     console.log(chalk.gray(`   端口: ${port}`));
     
+
+    // 处理 auth 参数，确保是字符串而不是数组
+    // commander 的 <code...> 会将多个参数收集为数组
+    const authCode = Array.isArray(options.auth) 
+      ? options.auth.join(' ') 
+      : options.auth;
+
     createServer({
       port,
       rootDir: resolvedDir,
-      auth: options.auth,
+      auth: authCode,
       open: options.open && options.browser !== false,
       compress: options.compress,
       cors: options.cors
