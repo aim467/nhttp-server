@@ -783,6 +783,109 @@ kbd {
     color: #0078d4;
 }
 
+/* 文件上传样式 */
+.upload-dropzone {
+    border: 2px dashed var(--explorer-border);
+    border-radius: 8px;
+    padding: 40px 20px;
+    text-align: center;
+    transition: all 0.2s ease;
+    background: var(--explorer-bg);
+}
+
+.upload-dropzone:hover,
+.upload-dropzone.drag-over {
+    border-color: var(--explorer-accent);
+    background: rgba(10, 132, 255, 0.05);
+}
+
+.upload-dropzone.drag-over {
+    background: rgba(10, 132, 255, 0.1);
+}
+
+.upload-dropzone-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.upload-file-list {
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.upload-files {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.upload-file-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 12px;
+    background: var(--explorer-header-bg);
+    border: 1px solid var(--explorer-border);
+    border-radius: 6px;
+}
+
+.upload-file-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 1;
+    min-width: 0;
+}
+
+.upload-file-name {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.upload-file-size {
+    color: var(--explorer-text-secondary);
+    font-size: 12px;
+}
+
+.upload-file-remove {
+    cursor: pointer;
+    color: var(--explorer-text-secondary);
+    transition: color 0.15s ease;
+}
+
+.upload-file-remove:hover {
+    color: #dc3545;
+}
+
+/* 上传进度 */
+#uploadProgress .progress {
+    height: 8px;
+    border-radius: 4px;
+}
+
+#uploadProgress .progress-bar {
+    background-color: var(--explorer-accent);
+}
+
+/* 暗黑模式上传样式 */
+[data-theme="dark"] .upload-dropzone {
+    border-color: rgba(60, 60, 64, 0.9);
+    background: #1c1c1e;
+}
+
+[data-theme="dark"] .upload-dropzone:hover,
+[data-theme="dark"] .upload-dropzone.drag-over {
+    border-color: var(--explorer-accent);
+    background: rgba(10, 132, 255, 0.1);
+}
+
+[data-theme="dark"] .upload-file-item {
+    background: #2c2c2e;
+    border-color: rgba(60, 60, 64, 0.9);
+}
 /* 文件预览浮窗样式 */
 .file-preview-popup {
     position: fixed;
