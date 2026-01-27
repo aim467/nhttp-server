@@ -25,8 +25,12 @@
     "archiver": "^5.3.2",
     "chalk": "^4.1.2",
     "commander": "^11.0.0",
+    "compression": "^1.8.1",
+    "cors": "^2.8.6",
     "ejs": "^3.1.10",
-    "mime": "^3.0.0"
+    "express": "^5.2.1",
+    "mime": "^3.0.0",
+    "morgan": "^1.10.1"
   },
   "engines": {
     "node": ">=16.0.0"
