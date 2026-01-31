@@ -10,7 +10,7 @@
 - 🖼️ **媒体预览** - 支持图片、视频、音频的在线预览
 - 📁 **智能图标** - 根据文件类型显示对应图标
 - ⚡ **高性能** - 支持缓存、Range 请求、压缩等优化
-- 🔧 **灵活配置** - 支持端口、目录、CORS 等多种配置选项
+- 🔧 **灵活配置** - 支持端口、目录、CORS、认证等多种配置选项
 - 📱 **二维码分享** - 内网手机扫码直接下载文件
 
 ## 安装
@@ -55,6 +55,7 @@ nhttp-server --compress --cors
 | `[directory]` | 要服务的目录 | 当前目录 |
 | `-p, --port <number>` | 指定端口 | 8000 |
 | `-d, --directory <path>` | 指定根目录 | 当前目录 |
+| `-a, --auth <code...>` | 指定访问授权码，开启受保护模式 | 未设置 |
 | `-o, --open` | 启动后自动打开浏览器 | false |
 | `--no-browser` | 明确不打开浏览器 | - |
 | `--compress` | 启用 gzip/brotli 压缩 | false |
@@ -76,6 +77,9 @@ nhttp-server --open --cors
 
 # 生产模式（启用压缩）
 nhttp-server --compress -p 80
+
+# 启用受保护模式（访问需输入授权码）
+nhttp-server -a 123456
 
 # 服务特定目录
 nhttp-server ~/Documents/photos --open
@@ -123,14 +127,23 @@ nhttp-server ~/Documents/photos --open
 - **CORS 支持**：可选的跨域资源共享
 - **访问日志**：详细的请求日志记录
 
+### 受保护模式与上传
+
+- 通过 `-a, --auth` 指定访问授权码，开启受保护模式
+- 访问受保护目录时需先在浏览器登录一次
+- 登录后可在页面中使用图形化界面批量上传文件（拖拽/多选）
+- 上传接口仅在受保护模式下可用，未启用时返回 403
+
 ## 键盘快捷键
 
 在目录浏览页面中，支持以下快捷键：
 
+- `/` - 聚焦搜索框，快速搜索文件
 - `V` - 切换视图（列表/网格）
-- `S` - 切换排序方式
-- `R` - 刷新页面
-- `ESC` - 关闭媒体预览模态框
+- `T` - 切换主题（浅色/深色）
+- `R` - 刷新当前目录
+- `?` - 打开快捷键说明
+- `ESC` - 清空搜索或关闭当前模态框/预览
 
 ## 支持的文件类型
 
@@ -161,12 +174,21 @@ nhttp-server ~/Documents/photos --open
 ```
 nhttp-server/
 ├── bin/
-│   └── nhttp-server.js    # CLI 启动脚本
+│   └── nhttp-server.js        # CLI 启动脚本
 ├── lib/
-│   ├── server.js          # HTTP 服务器
-│   ├── router.js          # 路由处理
-│   ├── renderer.js        # 目录渲染
-│   └── utils.js           # 工具函数
+│   ├── server.js              # HTTP 服务器入口
+│   ├── routes.js              # 路由与文件/目录处理
+│   ├── renderer-ejs.js        # 基于 EJS 的目录渲染
+│   ├── auth.js                # 授权码登录与受保护模式
+│   ├── error-handler.js       # 统一错误处理
+│   ├── utils.js               # 工具函数（格式化、图标、IP 等）
+│   ├── static/                # 前端静态资源
+│   │   ├── app.js
+│   │   ├── css/
+│   │   └── js/
+│   └── templates/             # EJS 模板
+│       ├── directory.ejs
+│       └── login.ejs
 ├── package.json
 ├── README.md
 └── project.md             # 设计文档
@@ -192,10 +214,11 @@ nhttp-server --help
 ### 技术栈
 
 - **Node.js** 16+ - 运行环境
+- **Express 5** - Web 服务器与路由
 - **Commander.js** - CLI 参数解析
 - **Chalk** - 终端彩色输出
-- **mime** - MIME 类型识别
-- **原生 HTTP 模块** - 轻量级实现
+- **EJS** - 目录模板渲染
+- **multer / archiver / morgan / compression / cors / mime** 等常用中间件
 
 ## 许可证
 
