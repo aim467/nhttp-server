@@ -21,6 +21,7 @@ program
   .action((directory, options) => {
     const rootDir = options.directory || directory;
     const port = parseInt(options.port, 10);
+    const autoPort = program.getOptionValueSource('port') === 'default';
     
     if (isNaN(port) || port < 1 || port > 65535) {
       console.error(chalk.red('❌ 端口必须是 1-65535 之间的数字'));
@@ -47,7 +48,8 @@ program
       auth: authCode,
       open: options.open && options.browser !== false,
       compress: options.compress,
-      cors: options.cors
+      cors: options.cors,
+      autoPort
     }).catch(error => {
       console.error(chalk.red('❌ 服务器启动失败:'), error.message);
       process.exit(1);

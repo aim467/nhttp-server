@@ -138,6 +138,9 @@ $RECYCLE.BIN/
 
 # Test files and test output
 test/
+!test/
+!test/server-port.test.js
 tests/
 *.test.js
+!test/server-port.test.js
 *.spec.js
