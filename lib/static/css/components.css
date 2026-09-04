@@ -155,6 +155,26 @@ body.body-locked { overflow: hidden; }
 .file-preview-content .preview-line { display: block; }
 .file-preview-content .preview-line:hover { background: rgba(128, 128, 128, 0.08); }
 
+/* 语法高亮 token */
+.file-preview-content .token-comment { color: var(--nh-syn-comment); font-style: italic; }
+.file-preview-content .token-string { color: var(--nh-syn-string); }
+.file-preview-content .token-number { color: var(--nh-syn-number); }
+.file-preview-content .token-keyword { color: var(--nh-syn-keyword); font-weight: 600; }
+.file-preview-content .token-builtin { color: var(--nh-syn-builtin); }
+.file-preview-content .token-tag { color: var(--nh-syn-tag); }
+.file-preview-content .token-attr { color: var(--nh-syn-attr); }
+
+/* PDF 预览 */
+.pdf-preview-frame {
+    width: 100%;
+    height: min(78vh, 820px);
+    border: 0;
+    background: #525659;
+}
+#mediaModal .modal-body:has(.pdf-preview-frame) {
+    background: #323639;
+}
+
 .file-preview-content .error-message { color: var(--nh-danger); padding: var(--nh-sp-6); text-align: center; }
 .file-preview-content .error-message .error-icon { font-size: 48px; display: block; margin-bottom: var(--nh-sp-3); }
 
@@ -243,6 +263,9 @@ body.body-locked { overflow: hidden; }
     .file-preview-actions .btn {
         min-height: 40px;
         min-width: 40px;
+    }
+    .pdf-preview-frame {
+        height: calc(100dvh - 56px - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px));
     }
     .file-preview-info {
         gap: var(--nh-sp-2) var(--nh-sp-3);

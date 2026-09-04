@@ -94,6 +94,15 @@
     --nh-preview-line-no: #9aa4b2;
     --nh-preview-border: #e6e9ef;
 
+    /* ---------- 语法高亮（浅色主题用偏深 token，预览区浅底也可读） ---------- */
+    --nh-syn-comment: #6a737d;
+    --nh-syn-string: #032f62;
+    --nh-syn-number: #005cc5;
+    --nh-syn-keyword: #d73a49;
+    --nh-syn-builtin: #6f42c1;
+    --nh-syn-tag: #22863a;
+    --nh-syn-attr: #6f42c1;
+
     /* ---------- 过渡 ---------- */
     --nh-transition: 0.16s ease;
 
@@ -160,4 +169,12 @@
     --nh-preview-text: #d6dce5;
     --nh-preview-line-no: #5a6473;
     --nh-preview-border: #2a313c;
+
+    --nh-syn-comment: #6a9955;
+    --nh-syn-string: #ce9178;
+    --nh-syn-number: #b5cea8;
+    --nh-syn-keyword: #569cd6;
+    --nh-syn-builtin: #4ec9b0;
+    --nh-syn-tag: #569cd6;
+    --nh-syn-attr: #9cdcfe;
 }
