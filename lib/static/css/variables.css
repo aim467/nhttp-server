@@ -1,0 +1,163 @@
+/* ===========================================================
+   variables.css —— nhttp-server 设计系统 (token 单一来源)
+   风格：云盘扁平风 (OneDrive / Google Drive inspired)
+   - 明亮、扁平、强彩色图标、低密度阴影、清晰边框分隔
+   - 浅色为默认值，[data-theme="dark"] 覆盖
+   - 所有页面/组件统一 @import 本文件，禁止在其它文件中重复定义变量
+   前缀约定：--nh-* 为项目命名空间，避免与第三方冲突
+   =========================================================== */
+
+:root {
+    /* ---------- 背景与表面 ---------- */
+    --nh-bg: #f4f6f8;                 /* 应用整体背景（冷灰） */
+    --nh-surface: #ffffff;            /* 卡片 / 文件项 / 弹窗表面 */
+    --nh-surface-2: #f7f9fb;          /* 次级表面（信息栏 / 表头） */
+    --nh-surface-3: #eef1f5;          /* 三级表面（输入框底 / 凹陷区） */
+    --nh-header-bg: rgba(255, 255, 255, 0.82); /* 头部背景（扁平微透） */
+    --nh-border: #e6e9ef;             /* 主边框 */
+    --nh-border-strong: #d6dae2;      /* 强调边框 */
+    --nh-hover: #eef3ff;              /* 悬停浅蓝底 */
+    --nh-selected: #e2ecff;           /* 选中底 */
+    --nh-overlay: rgba(45, 125, 255, 0.08); /* 拖拽 / 选中浅色遮罩 */
+
+    /* ---------- 文本 ---------- */
+    --nh-text: #1f2733;
+    --nh-text-secondary: #6b7686;
+    --nh-text-tertiary: #9aa4b2;
+    --nh-text-on-accent: #ffffff;
+
+    /* ---------- 强调色与状态色 ---------- */
+    --nh-accent: #2d7dff;             /* 主品牌蓝 */
+    --nh-accent-hover: #1f6ff5;
+    --nh-accent-active: #1661e0;
+    --nh-accent-soft: #eaf1ff;        /* 主色浅底（按钮 hover / 徽标） */
+    --nh-success: #16a34a;
+    --nh-success-soft: #e7f6ec;
+    --nh-danger: #e5484d;
+    --nh-danger-soft: #fdeaea;
+    --nh-warning: #f5820b;
+    --nh-warning-soft: #fef0e0;
+    --nh-info: #2d7dff;
+
+    /* ---------- 文件类型彩色盘（强彩色图标） ---------- */
+    --nh-ft-folder: #f2a900;          /* 文件夹：金黄 */
+    --nh-ft-image: #18a957;           /* 图片：绿 */
+    --nh-ft-video: #f25555;           /* 视频：红 */
+    --nh-ft-audio: #8b5cf6;           /* 音频：紫 */
+    --nh-ft-doc: #2d7dff;             /* 文档 Word：蓝 */
+    --nh-ft-sheet: #16a34a;           /* 表格 Excel：绿 */
+    --nh-ft-slide: #f5820b;           /* 演示 PPT：橙 */
+    --nh-ft-pdf: #e5484d;             /* PDF：红 */
+    --nh-ft-archive: #b45309;         /* 压缩包：棕橙 */
+    --nh-ft-code: #2d7dff;            /* 代码：蓝 */
+    --nh-ft-text: #6b7686;            /* 文本：灰 */
+    --nh-ft-default: #9aa4b2;         /* 未知：浅灰 */
+
+    /* ---------- 圆角 ---------- */
+    --nh-r-pill: 999px;
+    --nh-r-lg: 14px;                  /* 大卡片 / 弹窗 */
+    --nh-r-md: 10px;                  /* 控件 / 按钮 / 文件项 */
+    --nh-r-sm: 8px;
+    --nh-r-xs: 6px;
+
+    /* ---------- 间距（8px 基线模块化） ---------- */
+    --nh-sp-1: 4px;
+    --nh-sp-2: 8px;
+    --nh-sp-3: 12px;
+    --nh-sp-4: 16px;
+    --nh-sp-5: 20px;
+    --nh-sp-6: 24px;
+    --nh-sp-8: 32px;
+
+    /* ---------- 阴影（扁平风：极轻） ---------- */
+    --nh-shadow-sm: 0 1px 2px rgba(16, 24, 40, 0.05);
+    --nh-shadow-md: 0 6px 18px rgba(16, 24, 40, 0.08);
+    --nh-shadow-lg: 0 16px 48px rgba(16, 24, 40, 0.18);
+
+    /* ---------- 字体 ---------- */
+    --nh-font-sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+                     "PingFang SC", "Microsoft YaHei", "Helvetica Neue", sans-serif;
+    --nh-font-mono: "SF Mono", "JetBrains Mono", "Fira Code", "Consolas", "Monaco", monospace;
+
+    /* 字号刻度 */
+    --nh-fs-xs: 12px;
+    --nh-fs-sm: 13px;
+    --nh-fs-base: 14px;
+    --nh-fs-md: 15px;
+    --nh-fs-lg: 16px;
+    --nh-fs-xl: 20px;
+    --nh-fs-2xl: 26px;
+
+    /* ---------- 代码 / 文本预览区（随主题切换） ---------- */
+    --nh-preview-bg: #ffffff;
+    --nh-preview-text: #1f2733;
+    --nh-preview-line-no: #9aa4b2;
+    --nh-preview-border: #e6e9ef;
+
+    /* ---------- 过渡 ---------- */
+    --nh-transition: 0.16s ease;
+
+    /* ---------- 布局尺寸 ---------- */
+    --nh-header-h: 60px;
+    --nh-content-max: 1280px;
+
+    /* ---------- 安全区（供 JS / 布局读取） ---------- */
+    --nh-safe-top: env(safe-area-inset-top, 0px);
+    --nh-safe-right: env(safe-area-inset-right, 0px);
+    --nh-safe-bottom: env(safe-area-inset-bottom, 0px);
+    --nh-safe-left: env(safe-area-inset-left, 0px);
+}
+
+/* ===================== 深色主题 ===================== */
+[data-theme="dark"] {
+    --nh-bg: #0e1116;
+    --nh-surface: #171b22;
+    --nh-surface-2: #1f242d;
+    --nh-surface-3: #232a35;
+    --nh-header-bg: rgba(20, 24, 31, 0.85);
+    --nh-border: #2a313c;
+    --nh-border-strong: #353d4a;
+    --nh-hover: #232c3a;
+    --nh-selected: #1d3a63;
+    --nh-overlay: rgba(77, 141, 255, 0.14);
+
+    --nh-text: #e6eaf0;
+    --nh-text-secondary: #9aa4b2;
+    --nh-text-tertiary: #6b7686;
+    --nh-text-on-accent: #ffffff;
+
+    --nh-accent: #4d8dff;
+    --nh-accent-hover: #3f82ff;
+    --nh-accent-active: #5f99ff;
+    --nh-accent-soft: #1b2c47;
+    --nh-success: #2fb45f;
+    --nh-success-soft: #14291c;
+    --nh-danger: #ff6b6b;
+    --nh-danger-soft: #321a1c;
+    --nh-warning: #ff9f45;
+    --nh-warning-soft: #33240f;
+    --nh-info: #4d8dff;
+
+    /* 深色下文件色提亮，保持鲜艳可读 */
+    --nh-ft-folder: #ffc53d;
+    --nh-ft-image: #34c36b;
+    --nh-ft-video: #ff6b6b;
+    --nh-ft-audio: #a78bfa;
+    --nh-ft-doc: #4d8dff;
+    --nh-ft-sheet: #34c36b;
+    --nh-ft-slide: #ff9f45;
+    --nh-ft-pdf: #ff6b6b;
+    --nh-ft-archive: #d98a2b;
+    --nh-ft-code: #4d8dff;
+    --nh-ft-text: #9aa4b2;
+    --nh-ft-default: #6b7686;
+
+    --nh-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+    --nh-shadow-md: 0 6px 18px rgba(0, 0, 0, 0.45);
+    --nh-shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.6);
+
+    --nh-preview-bg: #11151b;
+    --nh-preview-text: #d6dce5;
+    --nh-preview-line-no: #5a6473;
+    --nh-preview-border: #2a313c;
+}

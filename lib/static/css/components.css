@@ -1,387 +1,320 @@
-/* ============ 右键菜单 ============ */
+@import "./variables.css";
+
+/* ===========================================================
+   components.css —— 浮窗 / 模态 / 右键菜单 / 上传 (云盘扁平风)
+   状态类由 JS 切换 class 控制，不再直接写 element.style.display。
+   =========================================================== */
+
+body.body-locked { overflow: hidden; }
+
+/* 状态切换通用规则 */
+.context-menu.is-open { display: block; }
+.file-preview-popup.is-open { display: flex; }
+.preview-overlay.is-open { display: block; }
+
+#uploadProgress, #uploadFileList { display: none; }
+#uploadProgress.is-visible, #uploadFileList.is-visible { display: block; }
+
+/* 隐藏的预览源图片：供 Viewer.js 抓取 */
+.viewer-image { display: none; }
+
+/* ============ 右键菜单（扁平浮层） ============ */
 .context-menu {
     position: fixed;
-    background: var(--explorer-bg);
-    border: 1px solid var(--explorer-border);
-    border-radius: 6px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    padding: 4px 0;
-    min-width: 180px;
+    background: var(--nh-surface);
+    border: 1px solid var(--nh-border);
+    border-radius: var(--nh-r-md);
+    box-shadow: var(--nh-shadow-lg);
+    padding: 6px;
+    min-width: 190px;
     z-index: 9999;
     display: none;
-    font-size: 13px;
+    font-size: var(--nh-fs-sm);
 }
-
-[data-theme="dark"] .context-menu {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-}
-
 .context-menu-item {
-    padding: 8px 16px;
+    padding: 9px 14px;
     cursor: pointer;
     display: flex;
     align-items: center;
-    color: var(--explorer-text);
-    transition: background-color 0.15s ease;
+    color: var(--nh-text);
+    border-radius: var(--nh-r-sm);
+    transition: var(--nh-transition);
 }
-
-.context-menu-item:hover {
-    background-color: var(--explorer-hover);
-}
-
-.context-menu-item:active {
-    background-color: var(--explorer-selected);
-}
-
+.context-menu-item:hover { background: var(--nh-hover); color: var(--nh-accent); }
+.context-menu-item:active { background: var(--nh-accent-soft); }
 .context-menu-divider {
     height: 1px;
-    background-color: var(--explorer-border);
-    margin: 4px 0;
+    background: var(--nh-border);
+    margin: 6px 4px;
 }
 
-/* ============ 文件预览浮窗 ============ */
+/* ============ 文件预览浮窗（居中扁平大卡片） ============ */
 .file-preview-popup {
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 80vw;
-    max-width: 900px;
-    height: 70vh;
-    max-height: 700px;
-    background: var(--explorer-bg);
-    border: 1px solid var(--explorer-border);
-    border-radius: 8px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+    width: 84vw;
+    max-width: 920px;
+    height: 78vh;
+    max-height: 760px;
+    background: var(--nh-surface);
+    border: 1px solid var(--nh-border);
+    border-radius: var(--nh-r-lg);
+    box-shadow: var(--nh-shadow-lg);
     z-index: 10000;
     display: none;
     flex-direction: column;
-    font-size: 13px;
-}
-
-[data-theme="dark"] .file-preview-popup {
-    background: #2d2d30;
-    border-color: #3e3e42;
+    font-size: var(--nh-fs-sm);
+    overflow: hidden;
 }
 
 .file-preview-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 10px 16px;
-    border-bottom: 1px solid var(--explorer-border);
-    background: var(--explorer-header-bg);
-    border-radius: 8px 8px 0 0;
+    padding: var(--nh-sp-3) var(--nh-sp-4);
+    border-bottom: 1px solid var(--nh-border);
+    background: var(--nh-surface-2);
 }
-
 .file-preview-title {
     display: flex;
     align-items: center;
     font-weight: 600;
-    color: var(--explorer-text);
-}
-
-.file-preview-actions {
-    display: flex;
-}
-
-.file-preview-info {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0;
-    padding: 8px 16px;
-    border-bottom: 1px solid var(--explorer-border);
-    background: var(--explorer-header-bg);
-    font-size: 12px;
-    color: var(--explorer-text-secondary);
-}
-
-.file-preview-info span {
-    display: flex;
-    align-items: center;
-}
-
-.file-preview-toolbar {
-    display: flex;
-    align-items: center;
-    padding: 8px 16px;
-    border-bottom: 1px solid var(--explorer-border);
-    background: var(--explorer-bg);
-}
-
-.file-preview-toolbar select {
-    width: auto;
-    min-width: 120px;
-}
-
-.file-preview-content {
-    flex: 1;
-    overflow: auto;
-    background: #1e1e1e;
-    color: #d4d4d4;
-    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
-    font-size: 13px;
-    line-height: 1.5;
-    padding: 16px;
-    margin: 0;
-    white-space: pre-wrap;
-    word-break: break-all;
-}
-
-.file-preview-content .line-number {
-    color: #858585;
-    display: inline-block;
-    width: 40px;
-    text-align: right;
-    margin-right: 16px;
-    user-select: none;
-}
-
-.file-preview-content .line-content {
-    display: inline;
-}
-
-/* 语法高亮 */
-.file-preview-content .keyword {
-    color: #569cd6;
-}
-
-.file-preview-content .string {
-    color: #ce9178;
-}
-
-.file-preview-content .comment {
-    color: #6a9955;
-}
-
-.file-preview-content .number {
-    color: #b5cea8;
-}
-
-.file-preview-content .function {
-    color: #dcdcaa;
-}
-
-.file-preview-status {
-    padding: 6px 16px;
-    font-size: 12px;
-    color: var(--explorer-text-secondary);
-    background: var(--explorer-header-bg);
-    border-top: 1px solid var(--explorer-border);
-    border-radius: 0 0 8px 8px;
-}
-
-/* 浮窗遮罩层 */
-.preview-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 9999;
-}
-
-/* 错误状态 */
-.file-preview-content .error-message {
-    color: #f14c4c;
-    padding: 20px;
-    text-align: center;
-}
-
-.file-preview-content .error-message .error-icon {
-    font-size: 48px;
-    margin-bottom: 16px;
-    display: block;
-}
-
-/* 大文件警告 */
-.file-preview-status .warning {
-    color: #ffa500;
-}
-
-.file-preview-status .info {
-    color: #0078d4;
-}
-
-/* ============ 文件上传样式 ============ */
-.upload-dropzone {
-    border: 2px dashed var(--explorer-border);
-    border-radius: 8px;
-    padding: 40px 20px;
-    text-align: center;
-    transition: all 0.2s ease;
-    background: var(--explorer-bg);
-}
-
-.upload-dropzone:hover,
-.upload-dropzone.drag-over {
-    border-color: var(--explorer-accent);
-    background: rgba(10, 132, 255, 0.05);
-}
-
-.upload-dropzone.drag-over {
-    background: rgba(10, 132, 255, 0.1);
-}
-
-.upload-dropzone-content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.upload-file-list {
-    max-height: 200px;
-    overflow-y: auto;
-}
-
-.upload-files {
-    display: flex;
-    flex-direction: column;
+    color: var(--nh-text);
     gap: 8px;
-}
-
-.upload-file-item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 8px 12px;
-    background: var(--explorer-header-bg);
-    border: 1px solid var(--explorer-border);
-    border-radius: 6px;
-}
-
-.upload-file-info {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    flex: 1;
     min-width: 0;
-}
-
-.upload-file-name {
-    flex: 1;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
 }
+.file-preview-actions { display: flex; gap: var(--nh-sp-1); flex-shrink: 0; }
+.file-preview-actions .btn {
+    border: 1px solid var(--nh-border);
+    background: var(--nh-surface);
+    color: var(--nh-text-secondary);
+    border-radius: var(--nh-r-sm);
+    padding: 4px 9px;
+    transition: var(--nh-transition);
+}
+.file-preview-actions .btn:hover { border-color: var(--nh-accent); color: var(--nh-accent); background: var(--nh-accent-soft); }
 
-.upload-file-size {
-    color: var(--explorer-text-secondary);
-    font-size: 12px;
+.file-preview-info {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--nh-sp-4);
+    padding: var(--nh-sp-2) var(--nh-sp-4);
+    border-bottom: 1px solid var(--nh-border);
+    background: var(--nh-surface-2);
+    font-size: var(--nh-fs-xs);
+    color: var(--nh-text-secondary);
+}
+.file-preview-info span { display: inline-flex; align-items: center; gap: 4px; }
+
+.file-preview-toolbar {
+    display: flex;
+    align-items: center;
+    gap: var(--nh-sp-2);
+    padding: var(--nh-sp-2) var(--nh-sp-4);
+    border-bottom: 1px solid var(--nh-border);
+    background: var(--nh-surface);
+}
+.file-preview-toolbar select { width: auto; min-width: 130px; }
+.file-preview-toolbar .btn {
+    border: 1px solid var(--nh-border);
+    background: var(--nh-surface);
+    color: var(--nh-text-secondary);
+    border-radius: var(--nh-r-sm);
+    transition: var(--nh-transition);
+}
+.file-preview-toolbar .btn:hover { border-color: var(--nh-accent); color: var(--nh-accent); }
+
+.file-preview-content {
+    flex: 1;
+    overflow: auto;
+    background: var(--nh-preview-bg);
+    color: var(--nh-preview-text);
+    font-family: var(--nh-font-mono);
+    font-size: var(--nh-fs-sm);
+    line-height: 1.6;
+    padding: var(--nh-sp-4);
+    margin: 0;
+    white-space: pre-wrap;
+    word-break: break-all;
+}
+.file-preview-content .line-number {
+    color: var(--nh-preview-line-no);
+    display: inline-block;
+    width: 44px;
+    text-align: right;
+    margin-right: 16px;
+    user-select: none;
+    flex-shrink: 0;
+}
+.file-preview-content .line-content { display: inline; }
+.file-preview-content .preview-line { display: block; }
+.file-preview-content .preview-line:hover { background: rgba(128, 128, 128, 0.08); }
+
+.file-preview-content .error-message { color: var(--nh-danger); padding: var(--nh-sp-6); text-align: center; }
+.file-preview-content .error-message .error-icon { font-size: 48px; display: block; margin-bottom: var(--nh-sp-3); }
+
+.file-preview-status { padding: var(--nh-sp-2) var(--nh-sp-4); font-size: var(--nh-fs-xs); border-top: 1px solid var(--nh-border); }
+.file-preview-status .warning { color: var(--nh-warning); }
+.file-preview-status .info { color: var(--nh-accent); }
+
+/* ============ 浮窗遮罩 ============ */
+.preview-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(16, 24, 40, 0.45);
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+    z-index: 9999;
+    display: none;
 }
 
-.upload-file-remove {
-    cursor: pointer;
-    color: var(--explorer-text-secondary);
-    transition: color 0.15s ease;
+/* ============ 上传组件 ============ */
+.upload-dropzone {
+    border: 2px dashed var(--nh-border-strong);
+    border-radius: var(--nh-r-lg);
+    padding: var(--nh-sp-8) var(--nh-sp-4);
+    text-align: center;
+    transition: var(--nh-transition);
+    background: var(--nh-surface-2);
 }
-
-.upload-file-remove:hover {
-    color: #dc3545;
+.upload-dropzone:hover { border-color: var(--nh-accent); background: var(--nh-accent-soft); }
+.upload-dropzone.drag-over {
+    border-color: var(--nh-accent);
+    background: var(--nh-accent-soft);
 }
+.upload-dropzone-content { display: flex; flex-direction: column; align-items: center; }
+.upload-dropzone-content .text-muted { color: var(--nh-text-tertiary) !important; }
 
-/* 上传进度 */
-#uploadProgress .progress {
-    height: 8px;
-    border-radius: 4px;
+.upload-file-list { max-height: 220px; overflow-y: auto; }
+.upload-files { display: flex; flex-direction: column; gap: var(--nh-sp-2); }
+.upload-file-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 14px;
+    background: var(--nh-surface-2);
+    border: 1px solid var(--nh-border);
+    border-radius: var(--nh-r-md);
 }
+.upload-file-info { display: flex; align-items: center; gap: var(--nh-sp-2); flex: 1; min-width: 0; }
+.upload-file-name { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.upload-file-size { color: var(--nh-text-tertiary); font-size: var(--nh-fs-xs); flex-shrink: 0; }
+.upload-file-remove { cursor: pointer; color: var(--nh-text-tertiary); transition: var(--nh-transition); }
+.upload-file-remove:hover { color: var(--nh-danger); }
 
-#uploadProgress .progress-bar {
-    background-color: var(--explorer-accent);
-}
+#uploadProgress .progress { height: 8px; border-radius: var(--nh-r-pill); background: var(--nh-surface-3); }
+#uploadProgress .progress-bar { background: var(--nh-accent); border-radius: var(--nh-r-pill); }
 
-/* 暗黑模式上传样式 */
-[data-theme="dark"] .upload-dropzone {
-    border-color: rgba(60, 60, 64, 0.9);
-    background: #1c1c1e;
-}
-
+/* ============ 深色模式补充 ============ */
+[data-theme="dark"] .context-menu { box-shadow: var(--nh-shadow-lg); }
+[data-theme="dark"] .upload-dropzone { background: var(--nh-surface-2); border-color: var(--nh-border-strong); }
 [data-theme="dark"] .upload-dropzone:hover,
-[data-theme="dark"] .upload-dropzone.drag-over {
-    border-color: var(--explorer-accent);
-    background: rgba(10, 132, 255, 0.1);
-}
+[data-theme="dark"] .upload-dropzone.drag-over { background: var(--nh-accent-soft); border-color: var(--nh-accent); }
+[data-theme="dark"] .upload-file-item { background: var(--nh-surface-2); border-color: var(--nh-border); }
 
-[data-theme="dark"] .upload-file-item {
-    background: #2c2c2e;
-    border-color: rgba(60, 60, 64, 0.9);
-}
+/* ============ 响应式：移动端浮窗全屏 ============ */
+@media (max-width: 767.98px) {
+    .file-preview-popup {
+        width: 100vw;
+        height: 100dvh;
+        max-width: none;
+        max-height: none;
+        top: 0;
+        left: 0;
+        transform: none;
+        border-radius: 0;
+        border: none;
+        padding-top: env(safe-area-inset-top, 0px);
+        padding-bottom: env(safe-area-inset-bottom, 0px);
+        padding-left: env(safe-area-inset-left, 0px);
+        padding-right: env(safe-area-inset-right, 0px);
+        box-sizing: border-box;
+    }
+    .file-preview-header {
+        border-radius: 0;
+        padding: var(--nh-sp-2) var(--nh-sp-3);
+        min-height: 48px;
+    }
+    .file-preview-actions .btn {
+        min-height: 40px;
+        min-width: 40px;
+    }
+    .file-preview-info {
+        gap: var(--nh-sp-2) var(--nh-sp-3);
+        padding: var(--nh-sp-2) var(--nh-sp-3);
+    }
+    .file-preview-toolbar {
+        flex-wrap: wrap;
+        gap: var(--nh-sp-2);
+        padding: var(--nh-sp-2) var(--nh-sp-3);
+    }
+    .file-preview-toolbar select {
+        flex: 1 1 auto;
+        min-width: 0;
+        width: auto;
+    }
+    .file-preview-content {
+        padding: var(--nh-sp-3);
+        -webkit-overflow-scrolling: touch;
+    }
+    .file-preview-content .line-number {
+        width: 32px;
+        margin-right: 10px;
+    }
 
-/* ============ 响应式设计 ============ */
-@media (max-width: 768px) {
-    .file-list:not(.list-view) {
-        grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
-        gap: 6px;
-        padding: 12px;
+    .upload-dropzone {
+        padding: var(--nh-sp-5) var(--nh-sp-3);
     }
-    
-    .file-icon-large {
-        font-size: 28px;
+
+    #uploadModal .modal-dialog,
+    #qrModal .modal-dialog,
+    #shortcutsModal .modal-dialog {
+        margin: var(--nh-sp-3);
+        max-width: calc(100% - 2 * var(--nh-sp-3));
     }
-    
-    .file-name-grid {
-        font-size: 11px;
+
+    #mediaModal .modal-dialog {
+        margin: 0;
+        max-width: 100%;
+        height: 100%;
     }
-    
-    .address-bar {
-        flex-direction: column;
-        gap: 8px;
+    #mediaModal .modal-content {
+        min-height: 100%;
+        border-radius: 0;
+        border: none;
     }
-    
-    .search-box {
-        min-width: auto;
-        width: 100%;
+    #mediaModal .modal-header {
+        padding-top: max(var(--nh-sp-3), env(safe-area-inset-top, 0px));
+        padding-left: max(var(--nh-sp-3), env(safe-area-inset-left, 0px));
+        padding-right: max(var(--nh-sp-3), env(safe-area-inset-right, 0px));
     }
-    
-    .toolbar {
-        flex-direction: column;
-        gap: 8px;
-        align-items: stretch !important;
+
+    .context-menu {
+        max-width: calc(100vw - 16px - env(safe-area-inset-left, 0px) - env(safe-area-inset-right, 0px));
     }
-    
-    .toolbar-left,
-    .toolbar-right {
-        justify-content: center;
+    .context-menu-item {
+        padding: 12px 16px;
+        min-height: 44px;
     }
 }
 
 @media (max-width: 576px) {
-    .file-list:not(.list-view) {
-        grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
-        gap: 4px;
-        padding: 8px;
+    .file-preview-popup {
+        width: 100vw;
+        height: 100dvh;
+        max-width: none;
+        max-height: none;
     }
-    
-    .file-icon-large {
-        font-size: 24px;
+    .file-preview-info { gap: var(--nh-sp-2); }
+    .upload-dropzone {
+        padding: var(--nh-sp-4) var(--nh-sp-3);
     }
-    
-    .file-name-grid {
-        font-size: 10px;
-    }
-    
-    .explorer-header {
-        padding: 4px 0;
-    }
-    
-    .address-bar,
-    .toolbar {
-        padding: 0 8px;
-    }
-}
-
-@media (min-width: 1200px) {
-    .file-list:not(.list-view) {
-        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-        gap: 12px;
-    }
-    
-    .file-icon-large {
-        font-size: 40px;
-    }
-    
-    .file-name-grid {
-        font-size: 13px;
+    .upload-dropzone-content .bi {
+        font-size: 2rem !important;
     }
 }
