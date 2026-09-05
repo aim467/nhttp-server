@@ -42,6 +42,7 @@ body.body-locked { overflow: hidden; }
 }
 .context-menu-item:hover { background: var(--nh-hover); color: var(--nh-accent); }
 .context-menu-item:active { background: var(--nh-accent-soft); }
+.context-menu-item.context-menu-danger:hover { color: var(--nh-danger); background: color-mix(in srgb, var(--nh-danger) 12%, transparent); }
 .context-menu-divider {
     height: 1px;
     background: var(--nh-border);
